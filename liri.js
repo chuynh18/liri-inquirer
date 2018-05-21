@@ -7,18 +7,8 @@ var Twitter = require('twitter');
 var Spotify = require('node-spotify-api');
 var inquirer = require("inquirer");
 var keys = require("./keys.js");
-
-var twitterApi = new Twitter({
-    consumer_key: process.env.TWITTER_CONSUMER_KEY,
-    consumer_secret: process.env.TWITTER_CONSUMER_SECRET,
-    access_token_key: process.env.TWITTER_ACCESS_TOKEN_KEY,
-    access_token_secret: process.env.TWITTER_ACCESS_TOKEN_SECRET
-});
-
-var spotifyApi = new Spotify({
-    id: process.env.SPOTIFY_ID,
-    secret: process.env.SPOTIFY_SECRET,
-});
+var twitterApi = new Twitter(keys.twitter);
+var spotifyApi = new Spotify(keys.spotify);
 
 var getTweets = argument => {
     var params = {screen_name: argument, count: 20};
