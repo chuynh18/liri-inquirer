@@ -99,7 +99,9 @@ var movieSearch = argument => {
                 console.log("Movie title: " + omdbResponse.Title);
                 console.log("Year: " + omdbResponse.Year);
                 console.log(omdbResponse.Ratings[0].Source + " rating: " + omdbResponse.Ratings[0].Value);
-                console.log(omdbResponse.Ratings[1].Source + " rating: " + omdbResponse.Ratings[1].Value);
+                if (omdbResponse.Ratings[1]) {
+                    console.log(omdbResponse.Ratings[1].Source + " rating: " + omdbResponse.Ratings[1].Value);
+                };
                 console.log("Country of origin: " + omdbResponse.Country);
                 console.log("Language: " + omdbResponse.Language);
                 console.log("Plot: " + omdbResponse.Plot);
