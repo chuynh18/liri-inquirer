@@ -7,7 +7,6 @@ var Twitter = require('twitter');
 var Spotify = require('node-spotify-api');
 var inquirer = require("inquirer");
 var keys = require("./keys.js");
-var fromRandom;
 
 var twitterApi = new Twitter({
     consumer_key: process.env.TWITTER_CONSUMER_KEY,
@@ -19,11 +18,11 @@ var twitterApi = new Twitter({
 var spotifyApi = new Spotify({
     id: process.env.SPOTIFY_ID,
     secret: process.env.SPOTIFY_SECRET,
-  });
+});
 
-var getTweets = function(argument) {
+var getTweets = argument => {
     var params = {screen_name: argument, count: 20};
-    twitterApi.get('statuses/user_timeline', params, function(error, tweets, response) {
+    twitterApi.get('statuses/user_timeline', params, (error, tweets, response) => {
         if (!error) {
             var twitterResponse = JSON.parse(response.body);
 
@@ -54,14 +53,16 @@ var getTweets = function(argument) {
     });
 };
 
-var getSpotify = function(argument) {
+var getSpotify = argument => {
     spotifyApi
     .request('https://api.spotify.com/v1/search?q=' + argument + "&type=track")
-    .then(function(data) {
+    .then(data => {
         var spotifyData = data.tracks;
 
         if (!spotifyData.total) {
             console.log("No results found.  Please revise your search and try again.");
+            console.log("\nCould I help you with something else today?");
+            liriStart();
         }
         else {
             for (var i = 0; i < spotifyData.items.length; i++) {
@@ -87,15 +88,15 @@ var getSpotify = function(argument) {
             liriStart();
         };
     })
-    .catch(function(err) {
+    .catch(err => {
         console.error('Error occurred: ' + err);
         console.log("\nCould I help you with something else today?");
         liriStart();
     });
 };
 
-var movieSearch = function(argument) {
-    request("http://www.omdbapi.com/?t=" + argument + "&y=&plot=short&apikey=trilogy", function(error, response, body) {
+var movieSearch = argument => {
+    request("http://www.omdbapi.com/?t=" + argument + "&y=&plot=short&apikey=trilogy", (error, response, body) => {
         // If the request is successful (i.e. if the response status code is 200)
         if (!error && response.statusCode === 200) {
             var omdbResponse = JSON.parse(body);
@@ -120,7 +121,7 @@ var movieSearch = function(argument) {
     });
 };
 
-var tweetFollowUp = function() {
+var tweetFollowUp = () => {
     inquirer
     .prompt([
     {
@@ -139,7 +140,7 @@ var tweetFollowUp = function() {
     });
 };
 
-var spotifyFollowUp = function() {
+var spotifyFollowUp = () => {
     inquirer
     .prompt([
     {
@@ -158,7 +159,7 @@ var spotifyFollowUp = function() {
     });
 };
 
-var movieFollowUp = function() {
+var movieFollowUp = () => {
     inquirer
     .prompt([
     {
@@ -177,7 +178,7 @@ var movieFollowUp = function() {
     });
 };
 
-var liriStart = function() {
+var liriStart = () => {
     inquirer
     .prompt([
         {
